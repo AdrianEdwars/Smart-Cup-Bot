@@ -1,5 +1,8 @@
 # Modules
 # pip install vk_api
+
+# Link to bot
+# https://vk.com/club219586902
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
