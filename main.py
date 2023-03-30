@@ -11,8 +11,8 @@ ANSWERS = []
 i, k, lang = 0, 0, 0
 # Russian and English questions for first story!
 RU_QUESTIONS1 = [
-    "Название твоего города.", "Существо среднего рода.", "Куда? (без предлога)", "Из чего? (без предлога)",
-    "Какая твоя самая любимая вещь?", "К чему? (без предлога)", "Ваша история готова!"
+    "Название твоего города.", "Существо мужского рода.", "Куда? (без предлога)", "Из чего? (без предлога в Родительном падеже)",
+    "Какая твоя самая любимая вещь? (В женском роде, 1 склонение.)", "К чему? (без предлога)", "Ваша история готова!"
 ]
 ENG_QUESTIONS1 = [
     "Which city are you from?", "Creature", "To where? (Without pretext)", "Your favourite material",
@@ -20,8 +20,8 @@ ENG_QUESTIONS1 = [
 ]
 # Russian and English questions for second story!
 RU_QUESTIONS2 = [
-    "Где бы ты мечтал побывать? (без предлога)", "Что ты собираешься делать?",
-    "Как зовут вашего монстра?", "Куда? (без предлога)", "Любой предмет", "Любое оружие (в мужском роде)", "Ваша история готова!"
+    "Где бы ты мечтал побывать? (без предлога в мужском роде)", "Что ты собираешься делать?",
+    "Как зовут вашего монстра?", "Куда? (без предлога в винительном падеже)", "Любой предмет (в винительном падеже)", "Любое оружие (в мужском роде)", "Ваша история готова!"
 ]
 ENG_QUESTIONS2 = [
     "Where would you like to go?", "What would you gonna do?",
@@ -48,7 +48,7 @@ for event in VkLongPoll(session).listen():
         user_id = event.user_id
 
         if lang == 0:
-            if text == 'история' and status != 1:
+            if text == 'история' or text == 'change language 🇷🇺' and status != 1:
                 keyboard = VkKeyboard(one_time=True)
                 keyboard.add_button("Поиски затерянного артефакта 🏺", VkKeyboardColor.PRIMARY)
                 keyboard.add_button("Путешествие к загадочному зданию 🧙‍", VkKeyboardColor.PRIMARY)
@@ -57,7 +57,7 @@ for event in VkLongPoll(session).listen():
                 status = 0
             if text == 'сменить язык 🇬🇧' and status == 0:
                 lang = 1
-                send_message(user_id, "Вы успешно изменили язык на английский (You succesfully changed language to English) Write 'history' to continue")
+                send_message(user_id, "Вы успешно изменили язык на английский (You succesfully changed language to English)")
             if text == 'поиски затерянного артефакта 🏺' and status == 0:
                 status = 1
                 ANSWERS = []
@@ -97,8 +97,8 @@ for event in VkLongPoll(session).listen():
                 ANSWERS[0] = ANSWERS[0].capitalize()
                 print(ANSWERS)
                 send_message(user_id,
-f"""Однажды {ANSWERS[0]} отправился в долгое путешествие по миру фэнтези. Первой остановкой была {ANSWERS[1]}. В это место, люди приходили в поисках {ANSWERS[6]}, который даровал своему обладателю неограниченную власть. {ANSWERS[0]} также присоединился к поиску и отправился в {ANSWERS[4]}.
-Вскоре он обнаружил {ANSWERS[6]} в таинственной пещере, но что-то пошло не так. Когда он схватил предмет, произошло что-то невероятное. Внезапно перед ним появился {ANSWERS[3]}, готовый атаковать. {ANSWERS[0]} выхватил {ANSWERS[7]} и встал на защиту. Но оружие оказалось не таким уж и эффективным. Тогда {ANSWERS[0]} решил {ANSWERS[2]}, и это помогло ему победить монстра и вернуться с предметом назад в {ANSWERS[1]}.""")
+f"""Однажды {ANSWERS[0]} отправился в долгое путешествие по миру фэнтези. Первой остановкой был {ANSWERS[1]}. В это место, люди приходили в поисках невероятного оружия под названием "{ANSWERS[6]}", который даровал своему обладателю неограниченную власть. {ANSWERS[0]} также присоединился к поиску и отправился в {ANSWERS[4]}.
+Вскоре он обнаружил {ANSWERS[6]} в таинственной пещере, но что-то пошло не так. Когда он схватил {ANSWERS[5]}, произошло что-то невероятное. Внезапно перед ним появился {ANSWERS[3]}, готовый атаковать. {ANSWERS[0]} выхватил {ANSWERS[7]} и встал на защиту. Но оружие оказалось не таким уж и эффективным. Тогда {ANSWERS[0]} решил {ANSWERS[2]}, и это помогло ему победить монстра и вернуться назад в {ANSWERS[1]}.""")
                 keyboard = VkKeyboard(one_time=True)
                 keyboard.add_button("История", VkKeyboardColor.PRIMARY)
                 keyboard.add_button("Хватит ❌", VkKeyboardColor.NEGATIVE)
@@ -110,16 +110,16 @@ f"""Однажды {ANSWERS[0]} отправился в долгое путеш�
                 ANSWERS[2] = ANSWERS[2].capitalize()
                 print(ANSWERS)
                 send_message(user_id,
-f"""Жил-был молодой герой по имени {ANSWERS[0]}. Он жил в маленькой деревушке на окраине королевства "{ANSWERS[1].capitalize()}". Однажды {ANSWERS[0]} отправился на прогулку в лес и наткнулся на {ANSWERS[2]}. {ANSWERS[2]} смотрел на нашего героя странным взглядом и спросил: "Ты готов совершить путешествие в '{ANSWERS[3]}'?" {ANSWERS[0]} не знал, что делать, но решился и ответил "Да, я готов!".
+f"""Жил-был молодой герой по имени {ANSWERS[0]}. Он жил в маленькой деревушке на окраине королевства "{ANSWERS[1].capitalize()}". Однажды {ANSWERS[0]} отправился на прогулку в лес и наткнулся на {ANSWERS[2]}. {ANSWERS[2]} смотрел на нашего героя странным взглядом и спросил: "Ты готов совершить путешествие в "{ANSWERS[3]}"?" {ANSWERS[0]} не знал, что делать, но решился и ответил "Да, я готов!".
 {ANSWERS[0].capitalize()} и {ANSWERS[2]} отправились в путешествие через темный лес, который казался бесконечным. Вскоре они пришли к {ANSWERS[6]}, которое было полностью построено из {ANSWERS[4]}. {ANSWERS[2]} сказал: "Мы пришли за артефактом под названием "{ANSWERS[5]}", который был спрятан внутри этого здания много лет назад". {ANSWERS[0]} почувствовал себя немного напуганным, но его любопытство взяло верх, и он решил идти внутрь здания вместе с {ANSWERS[2]}.
-Они преодолели множество опасностей, прежде чем нашли {ANSWERS[5]}. Но внезапно {ANSWERS[0]} услышал странный звук, и {ANSWERS[2]} исчезло. {ANSWERS[0]} остался один в здании, но он знал, что должен вернуться домой и рассказать всем свою историю.""")
+Они преодолели множество опасностей, прежде чем нашли {ANSWERS[5][:-1]}у. Но внезапно {ANSWERS[0]} услышал странный звук, и {ANSWERS[2]} исчез. {ANSWERS[0]} остался один в здании, но он знал, что должен вернуться домой и рассказать всем свою историю.""")
                 keyboard = VkKeyboard(one_time=True)
                 keyboard.add_button("История", VkKeyboardColor.PRIMARY)
                 keyboard.add_button("Хватит ❌", VkKeyboardColor.NEGATIVE)
                 send_message(user_id, "Выбирайте, что будем делать дальше?", keyboard)
                 status = 2
         else:
-            if text == 'history' and status != 1:
+            if text == 'history' or text == 'сменить язык 🇬🇧' and status != 1:
                 keyboard = VkKeyboard(one_time=True)
                 keyboard.add_button("Finding a Lost Artifact 🏺", VkKeyboardColor.PRIMARY)
                 keyboard.add_button("Journey to the Mysterious Building 🧙‍", VkKeyboardColor.PRIMARY)
@@ -128,7 +128,7 @@ f"""Жил-был молодой герой по имени {ANSWERS[0]}. Он �
                 status = 0
             if text == 'change language 🇷🇺' and status == 0:
                 lang = 0
-                send_message(user_id, "Вы успешно изменили язык на русский (You succesfully changed language to Russian) Напиши 'история' чтобы продолжить")
+                send_message(user_id, "Вы успешно изменили язык на русский (You succesfully changed language to Russian)")
             if text == 'finding a lost artifact 🏺' and status == 0:
                 status = 1
                 ANSWERS = []
@@ -178,7 +178,7 @@ When he grabbed the object, something incredible happened. Suddenly, a {ANSWERS[
                 ANSWERS[0] = ANSWERS[0].capitalize()
                 ANSWERS[2] = ANSWERS[2].capitalize()
                 send_message(user_id,
-f"""Once upon a time, there was a young hero named {ANSWERS[0]}. He lived in a small village on the outskirts of the "{ANSWERS[1]}" kingdom. One day, {ANSWERS[0]} went for a walk in the forest and stumbled upon a {ANSWERS[2]}. {ANSWERS[2]} looked at {ANSWERS[0]} with a strange gaze and asked, "Are you ready to embark on a journey to {ANSWERS[3]}?" {ANSWERS[0]} didn't know what to do, but he gathered his courage and replied, "Yes, I am ready!"
+f"""Once upon a time, there was a young hero named {ANSWERS[0]}. He lived in a small village on the outskirts of the "{ANSWERS[1]}" kingdom. One day, {ANSWERS[0]} went for a walk in the forest and stumbled upon a {ANSWERS[2]}. {ANSWERS[2]} looked at {ANSWERS[0]} with a strange gaze and asked, "Are you ready to embark on a journey to "{ANSWERS[3]}"?" {ANSWERS[0]} didn't know what to do, but he gathered his courage and replied, "Yes, I am ready!"
  {ANSWERS[0]} and {ANSWERS[2]} set off on a journey through the dark forest, which seemed endless. Soon, they arrived at a {ANSWERS[6]} that was entirely built from {ANSWERS[4]}. {ANSWERS[2]} said, "We have come for the {ANSWERS[5]} that was hidden inside this building many years ago." {ANSWERS[0]} felt a little scared, but his curiosity took over, and he decided to enter the building together with {ANSWERS[2]}.
  They overcame many dangers before they found the {ANSWERS[5]}. But suddenly, {ANSWERS[0]} heard a strange sound, and {ANSWERS[2]} disappeared. {ANSWERS[0]} was left alone in the building, but he knew that he had to return home and tell everyone his story.""")
                 keyboard = VkKeyboard(one_time=True)
