@@ -1,13 +1,7 @@
-# Modules
-# pip install vk_api
-
-# Link to bot
-# https://vk.com/club219586902
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
-# Create session
 session = vk_api.VkApi(
     token="vk1.a.BkFKcSk0gZ-nEN9Q6Sbc0rzb7etqmDHNOeIkHuHxgOjKYQk0Zd7IIg9N5dtnAWSgFAm5c-eXOv8zS2ya33PzwYKrbcUK6o_0eVtZWGgaeT1A19Rx5UhqgJBedXMdcvEHTDBBm61IvX7Qe1ahfK4eKmEnHABp0b8hGCUb5YxYfzWAYKijfbMQAappnb8p2Mu65B4z9MOoiCuoQC3PdZbr7Q")
 
@@ -17,24 +11,23 @@ ANSWERS = []
 i, k, lang = 0, 0, 0
 # Russian and English questions for first story!
 RU_QUESTIONS1 = [
-    "C какого ты города?", "Существо среднего рода.", "Куда?", "Твой любимый материал. [Из чего? <...>]",
-    "Какая твоя самая любимая вещь?", "К чему?", "Ваша история готова!"
+    "Название твоего города.", "Существо среднего рода.", "Куда? (без предлога)", "Из чего? (без предлога)",
+    "Какая твоя самая любимая вещь?", "К чему? (без предлога)", "Ваша история готова!"
 ]
 ENG_QUESTIONS1 = [
-    "Which city are you from?", "Creature", "To where?", "Your favourite material",
+    "Which city are you from?", "Creature", "To where? (Without pretext)", "Your favourite material",
     "What's your favourite object?", "Any place", "Your history is done."
 ]
 # Russian and English questions for second story!
 RU_QUESTIONS2 = [
-    "Где бы ты мечтал побывать?", "Что бы ты собираешься делать?",
-    "Какого монстра вы боитесь?", "Куда?", "Любой предмет", "Любое оружие", "Ваша история готова!"
+    "Где бы ты мечтал побывать? (без предлога)", "Что ты собираешься делать?",
+    "Как зовут вашего монстра?", "Куда? (без предлога)", "Любой предмет", "Любое оружие (в мужском роде)", "Ваша история готова!"
 ]
 ENG_QUESTIONS2 = [
     "Where would you like to go?", "What would you gonna do?",
-    "What monster are you afraid of?", "To where?", "Any object", "Any gun", "Your history is done."
+    "Name of monster, who you very afraid of.", "To where?  (Without pretext)", "Any object", "Any gun", "Your history is done."
 ]
 
-# Function to send message.
 def send_message(user_id, message, keyboard=None):
     post = {
         "user_id": user_id,
@@ -48,14 +41,12 @@ def send_message(user_id, message, keyboard=None):
         post = post
     session.method("messages.send", post)
 
-# Main loop.
+
 for event in VkLongPoll(session).listen():
     if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-        # Create some variables
         text = event.text.lower()
         user_id = event.user_id
-        
-        # for Russian
+
         if lang == 0:
             if text == 'история' and status != 1:
                 keyboard = VkKeyboard(one_time=True)
@@ -74,7 +65,7 @@ for event in VkLongPoll(session).listen():
                 keyboard = VkKeyboard(one_time=True)
                 keyboard.add_button("Хватит ❌", VkKeyboardColor.NEGATIVE)
                 send_message(user_id,
-                             "Отлично! Сейчас я вам задам несколько вопросов. Отвечайте на них одним словом в нужной форме.\nИтак, первый вопрос. Как вас зовут?",
+                             "Отлично! Сейчас я вам задам несколько вопросов. Отвечайте на них одним словом в нужной форме.\nИтак, первый вопрос. Как зовут вашего отца?",
                              keyboard)
             if text == "путешествие к загадочному зданию 🧙‍" and status == 0:
                 status = 3
@@ -116,18 +107,17 @@ f"""Однажды {ANSWERS[0]} отправился в долгое путеш�
             if i == 7 and status == 1:
                 ANSWERS.append(text)
                 ANSWERS[0] = ANSWERS[0].capitalize()
+                ANSWERS[2] = ANSWERS[2].capitalize()
                 print(ANSWERS)
                 send_message(user_id,
-f"""Жил-был молодой герой по имени {ANSWERS[0]}. Он жил в маленькой деревушке на окраине королевства "{ANSWERS[1].capitalize()}". Однажды {ANSWERS[0]} отправился на прогулку в лес и наткнулся на {ANSWERS[2]}. {ANSWERS[2]} смотрел на {ANSWERS[0]} странным взглядом и спросил: "Ты готов совершить путешествие в {ANSWERS[3]}?" {ANSWERS[0]} не знал, что делать, но решился и ответил "Да, я готов!".
-{ANSWERS[0].capitalize()} и {ANSWERS[2]} отправились в путешествие через темный лес, который казался бесконечным. Вскоре они пришли к {ANSWERS[6]}, которое было полностью построено из {ANSWERS[4]}. {ANSWERS[2]} сказал: "Мы пришли за {ANSWERS[5]}, который был спрятан внутри этого здания много лет назад". {ANSWERS[0]} почувствовал себя немного напуганным, но его любопытство взяло верх, и он решил идти внутрь здания вместе с {ANSWERS[2]}.
+f"""Жил-был молодой герой по имени {ANSWERS[0]}. Он жил в маленькой деревушке на окраине королевства "{ANSWERS[1].capitalize()}". Однажды {ANSWERS[0]} отправился на прогулку в лес и наткнулся на {ANSWERS[2]}. {ANSWERS[2]} смотрел на нашего героя странным взглядом и спросил: "Ты готов совершить путешествие в '{ANSWERS[3]}'?" {ANSWERS[0]} не знал, что делать, но решился и ответил "Да, я готов!".
+{ANSWERS[0].capitalize()} и {ANSWERS[2]} отправились в путешествие через темный лес, который казался бесконечным. Вскоре они пришли к {ANSWERS[6]}, которое было полностью построено из {ANSWERS[4]}. {ANSWERS[2]} сказал: "Мы пришли за артефактом под названием "{ANSWERS[5]}", который был спрятан внутри этого здания много лет назад". {ANSWERS[0]} почувствовал себя немного напуганным, но его любопытство взяло верх, и он решил идти внутрь здания вместе с {ANSWERS[2]}.
 Они преодолели множество опасностей, прежде чем нашли {ANSWERS[5]}. Но внезапно {ANSWERS[0]} услышал странный звук, и {ANSWERS[2]} исчезло. {ANSWERS[0]} остался один в здании, но он знал, что должен вернуться домой и рассказать всем свою историю.""")
                 keyboard = VkKeyboard(one_time=True)
                 keyboard.add_button("История", VkKeyboardColor.PRIMARY)
                 keyboard.add_button("Хватит ❌", VkKeyboardColor.NEGATIVE)
                 send_message(user_id, "Выбирайте, что будем делать дальше?", keyboard)
                 status = 2
-                
-        # For English
         else:
             if text == 'history' and status != 1:
                 keyboard = VkKeyboard(one_time=True)
@@ -186,7 +176,7 @@ When he grabbed the object, something incredible happened. Suddenly, a {ANSWERS[
             if i == 7 and status == 1:
                 ANSWERS.append(text)
                 ANSWERS[0] = ANSWERS[0].capitalize()
-                print(ANSWERS)
+                ANSWERS[2] = ANSWERS[2].capitalize()
                 send_message(user_id,
 f"""Once upon a time, there was a young hero named {ANSWERS[0]}. He lived in a small village on the outskirts of the "{ANSWERS[1]}" kingdom. One day, {ANSWERS[0]} went for a walk in the forest and stumbled upon a {ANSWERS[2]}. {ANSWERS[2]} looked at {ANSWERS[0]} with a strange gaze and asked, "Are you ready to embark on a journey to {ANSWERS[3]}?" {ANSWERS[0]} didn't know what to do, but he gathered his courage and replied, "Yes, I am ready!"
  {ANSWERS[0]} and {ANSWERS[2]} set off on a journey through the dark forest, which seemed endless. Soon, they arrived at a {ANSWERS[6]} that was entirely built from {ANSWERS[4]}. {ANSWERS[2]} said, "We have come for the {ANSWERS[5]} that was hidden inside this building many years ago." {ANSWERS[0]} felt a little scared, but his curiosity took over, and he decided to enter the building together with {ANSWERS[2]}.
