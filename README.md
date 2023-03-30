@@ -3,3 +3,6 @@
 
 Необходимая библиотека:
 pip install vk_api
+
+Ccылка на бота:
+https://vk.com/club219586902
