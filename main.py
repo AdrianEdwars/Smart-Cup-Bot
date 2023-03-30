@@ -1,7 +1,9 @@
+# Modules
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
 
+# Create session
 session = vk_api.VkApi(
     token="vk1.a.BkFKcSk0gZ-nEN9Q6Sbc0rzb7etqmDHNOeIkHuHxgOjKYQk0Zd7IIg9N5dtnAWSgFAm5c-eXOv8zS2ya33PzwYKrbcUK6o_0eVtZWGgaeT1A19Rx5UhqgJBedXMdcvEHTDBBm61IvX7Qe1ahfK4eKmEnHABp0b8hGCUb5YxYfzWAYKijfbMQAappnb8p2Mu65B4z9MOoiCuoQC3PdZbr7Q")
 
@@ -28,6 +30,7 @@ ENG_QUESTIONS2 = [
     "What monster are you afraid of?", "To where?", "Any object", "Any gun", "Your history is done."
 ]
 
+# Function to send message.
 def send_message(user_id, message, keyboard=None):
     post = {
         "user_id": user_id,
@@ -41,12 +44,14 @@ def send_message(user_id, message, keyboard=None):
         post = post
     session.method("messages.send", post)
 
-
+# Main loop.
 for event in VkLongPoll(session).listen():
     if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+        # Create some variables
         text = event.text.lower()
         user_id = event.user_id
-
+        
+        # for Russian
         if lang == 0:
             if text == 'история' and status != 1:
                 keyboard = VkKeyboard(one_time=True)
@@ -117,6 +122,8 @@ f"""Жил-был молодой герой по имени {ANSWERS[0]}. Он �
                 keyboard.add_button("Хватит ❌", VkKeyboardColor.NEGATIVE)
                 send_message(user_id, "Выбирайте, что будем делать дальше?", keyboard)
                 status = 2
+                
+        # For English
         else:
             if text == 'history' and status != 1:
                 keyboard = VkKeyboard(one_time=True)
